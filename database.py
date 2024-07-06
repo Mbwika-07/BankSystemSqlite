@@ -8,13 +8,17 @@ create_admin_table_query = "CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMAR
 
 create_newuser_table_query = "CREATE TABLE IF NOT EXISTS new_users (username TEXT NOT NULL, id TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, balance REAL DEFAULT 0.0)"
 
+
 check_user_credentials = "SELECT * FROM users WHERE accountid = ? AND password = ?;"
 
 check_admin_credentials = "SELECT * FROM admins WHERE username = ? AND password = ?;"
 
-insert_users = "INSERT INTO users (username, id, email, password, balance) VALUES (?, ?, ?, ?, ?);"
+
+insert_users = "INSERT INTO new_users (username, id, email, password, balance) VALUES (?, ?, ?, ?, ?);"
+
 
 get_user_details_query = "SELECT * FROM users WHERE accountid = ?;"
+
 
 update_balance_query = "UPDATE users SET balance = ? WHERE accountid = ?"
 
@@ -42,9 +46,9 @@ def verify_user(connection, username, password):
     with connection:
         return connection.execute(check_user_credentials, (username, password)).fetchone()
 
-def add_user(connection, username, id, email, password, balance):
-    with connection:
-        connection.execute(insert_users, (username, id, email, password, balance))
+# def add_user(connection, username, id, email, password, balance):
+#     with connection:
+#         connection.execute(insert_users, (username, id, email, password, balance))
 
 def get_user_details(connection, accountid):
     with connection:
@@ -57,7 +61,9 @@ def update_balance(connection, accountid, new_balance):
 #ADMINS FUNCTIONS
 
 #NEW USER FUNCTIONS
-
+def add_user(connection, username, id, email, password, balance = 0.0):
+    with connection:
+        connection.execute(insert_users, (username, id, email, password, balance))
 
 
 

@@ -11,13 +11,15 @@ create_newuser_table_query = "CREATE TABLE IF NOT EXISTS new_users (username TEX
 
 check_user_credentials = "SELECT * FROM users WHERE accountid = ? AND password = ?;"
 
-check_admin_credentials = "SELECT * FROM admins WHERE username = ? AND password = ?;"
+check_admin_credentials = "SELECT * FROM admins WHERE id = ? AND password = ?;"
 
 
 insert_users = "INSERT INTO new_users (username, id, email, password, balance) VALUES (?, ?, ?, ?, ?);"
+insert_admins = "INSERT INTO admins (username, password) VALUES (?, ?);"
 
 
 get_user_details_query = "SELECT * FROM users WHERE accountid = ?;"
+get_admin_details_query = "SELECT * FROM admins WHERE id = ?;"
 
 
 update_balance_query = "UPDATE users SET balance = ? WHERE accountid = ?"
@@ -58,7 +60,22 @@ def update_balance(connection, accountid, new_balance):
     with connection:
         connection.execute(update_balance_query, (new_balance, accountid))
 
+
+
+
 #ADMINS FUNCTIONS
+def add_admin(connection, username, password):
+    with connection:
+        connection.execute(insert_admins, (username, password))#USED TO ADD A NEW ADMINISTRATOR
+
+def verify_admin(connection, username, password):
+    with connection:
+        return connection.execute(check_admin_credentials, (username, password)).fetchone()
+
+def get_admin_details(connection, id):
+    with connection:
+        return connection.execute(get_admin_details_query, (id,)).fetchone()
+
 
 #NEW USER FUNCTIONS
 def add_user(connection, username, id, email, password, balance = 0.0):
@@ -75,4 +92,5 @@ create_table(conn)
 create_admin_table(conn)
 create_newuser_table(conn)
 #add_user(conn, "testadmin", "123456789", "testadmin@example.com", "password", 0)
+#add_admin(conn, "allan", "password")
 conn.commit()

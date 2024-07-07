@@ -1,7 +1,12 @@
 import database
 import users
+import admins
 
 def login_user(connection):
+    print("\n----------------------------------------------------------------------------------------------------------------------------------------------")
+    print("\t\t\t\t\t\tLOG INTO ACCOUNT")
+    print("----------------------------------------------------------------------------------------------------------------------------------------------")
+    
     accountid = input("Enter your account id: ")
     password = input("Enter your password: ")
         
@@ -15,8 +20,10 @@ def login_user(connection):
     else:
         print("Invalid username or password. Please try again.")
 
+
+
 def signup_newuser(connection):
-    print("----------------------------------------------------------------------------------------------------------------------------------------------")
+    print("\n----------------------------------------------------------------------------------------------------------------------------------------------")
     print("\t\t\t\t\t\tCREATE NEW ACCOUNT")
     print("----------------------------------------------------------------------------------------------------------------------------------------------")
     
@@ -30,7 +37,23 @@ def signup_newuser(connection):
     print("Account created successfully. Try to log in later as the admin has to approve your account.")
 
 
-
+def login_admin(connection):
+    print("\n----------------------------------------------------------------------------------------------------------------------------------------------")
+    print("\t\t\t\t\t\tLOG IN AS ADMINISTRATOR ")
+    print("----------------------------------------------------------------------------------------------------------------------------------------------")
+    
+    id = input("Enter your account id: ")
+    password = input("Enter your password: ")
+        
+    userdet = database.verify_admin(connection, id, password)
+        
+    if userdet:
+        print("----------------------------------------------------------------------------------------------------------------------------------------------")
+        print(f"\t\t\t\t\t\tWELCOME TO THE ADMIN DASHBOARD {userdet[1].upper()} !")
+        print("----------------------------------------------------------------------------------------------------------------------------------------------")
+        admins.welcome_admin(connection, id)
+    else:
+        print("Invalid username or password. Please try again.")
 
 
 
@@ -55,7 +78,7 @@ def main():
         if choice == "1":
             login_user(connection)
         elif choice == "2":
-            pass
+            login_admin(connection)
         elif choice == "3":
             signup_newuser(connection)
         elif choice == "4":

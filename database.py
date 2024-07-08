@@ -24,6 +24,10 @@ get_admin_details_query = "SELECT * FROM admins WHERE id = ?;"
 
 update_balance_query = "UPDATE users SET balance = ? WHERE accountid = ?"
 
+##query to transfer users from table new_uses to users
+select_new_users_query = "SELECT * FROM new_users;"
+insert_user_query = "INSERT INTO users (username, id, email, password, balance) VALUES (?, ?, ?, ?, ?);"
+delete_new_user_query = "DELETE FROM new_users WHERE username = ? AND id = ? AND email = ? AND password = ? AND balance = ?;"
 
 
 
@@ -78,10 +82,21 @@ def get_admin_details(connection, id):
 
 
 #NEW USER FUNCTIONS
-def add_user(connection, username, id, email, password, balance = 0.0):
+def add_user(connection, username, id, email, password, balance=0.0):
     with connection:
         connection.execute(insert_users, (username, id, email, password, balance))
 
+def select_new_users(connection):
+    with connection:
+        return connection.execute(select_new_users_query).fetchall()
+
+def delete_new_user(connection, username, id, email, password, balance):
+    with connection:
+        connection.execute(delete_new_user_query, (username, id, email, password, balance))
+
+def add_user_to_usertable(connection, username, id, email, password, balance=0.0):
+    with connection:
+        connection.execute(insert_user_query, (username, id, email, password, balance))
 
 
 

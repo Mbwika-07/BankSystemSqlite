@@ -40,6 +40,12 @@ def admin_menu(connection):
             print("INVALID CHOICE. PLEASE TRY AGAIN.")
 
 
+
+
+
+
+
+
 def approve_users(connection):
     new_users = database.select_new_users(connection)
     

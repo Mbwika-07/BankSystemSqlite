@@ -21,6 +21,8 @@ def welcome_user(connection, accountid):
         print("Unable to retrieve user details.")
 
 
+
+
 # Function to display the user menu and handle user choices
 def user_menu(connection, accountid):
     while True:
